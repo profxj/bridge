@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bridge"
+version = "0.0.1"
+description = "A bot that plays winning contract bridge (dealing, bidding, play, scoring)."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "J. Xavier Prochaska", email = "jxp@ucsc.edu" }]
+# Developed against the conda env "astro14" (Python 3.14.5).
+requires-python = ">=3.14"
+dependencies = [
+    "PyYAML>=6.0",   # SAYC bidding rules are stored as YAML data files
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+    "mypy>=1.11",
+    "types-PyYAML>=6.0",  # type stubs so `mypy bridge` understands yaml
+]
+
+[tool.setuptools.packages.find]
+include = ["bridge*"]
+
+[tool.setuptools.package-data]
+# Ship the YAML bidding data with the package so it loads after install.
+bridge = ["data/**/*.yaml"]
+
+[tool.ruff]
+line-length = 88
+target-version = "py314"
+# Demonstration notebooks are illustrative, not library code — don't lint them.
+extend-exclude = ["nb"]
+
+[tool.ruff.lint]
+# Sensible default rule set: pyflakes, pycodestyle, isort, pyupgrade, bugbear.
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+python_version = "3.14"
+warn_unused_configs = true
+disallow_untyped_defs = true   # CLAUDE.md: type hints on all public functions
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

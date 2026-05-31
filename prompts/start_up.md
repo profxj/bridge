@@ -39,9 +39,37 @@ Assume Python 3.14 and pip
 
 yes
 
+## Coding
+
+Here are guidelines for coding: 
+
+- Use Python where possible
+- Add inline comments to explain the effort
+- Reuse existing code when possible
+- Use methods, not classes
+- Place import statements at the top of the file.
+- Include a description of inputs/outputs in the doc string of all methods
+- Place modules under the bridge/ directory.  I have already added a __init__.py file.
+
+
+### Questions from Claude (re: Coding guidelines)
+
+I updated `CLAUDE.md` to reflect the coding guidelines (functions not classes,
+top-of-file imports, input/output docstrings, inline comments, reuse, modules
+under `bridge/`). One clarification, with my current assumption:
+
+6. **"Use methods, not classes"** — does this rule out lightweight,
+   *behaviour-free* data holders like `Enum` (e.g. Suit/Rank) and `NamedTuple`
+   (e.g. a Card as `(suit, rank)`)? They aren't OO classes in spirit — just
+   typed, immutable data that functions operate on.
+   *Assumed: these lightweight data types are OK; what we avoid is
+   logic-bearing classes / inheritance / methods-on-objects. If you'd prefer
+   pure tuples/dicts with no `Enum`/`NamedTuple` at all, say so.*
+
 ## Skills
 
 ## Prompts
 
 1. Perform the 1st command under CLAUDE.md
 2. Re-read this file and my answers to the questions from Claude.  Make any necessary adjustments to CLAUDE.md.
+3. Re-read this file.  See my guidelines on Coding.  Edit the CLAUDE.md file to reflect the guidelines.

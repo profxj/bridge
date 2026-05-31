@@ -57,23 +57,41 @@ prompts/                # project prompts (existing)
 ```
 
 Module boundaries:
-- `core` and `rules` are pure, deterministic, and have **no I/O**.
-- Agents receive an immutable view of game state and return a legal call
-  or card; they must not mutate engine state directly.
+- `core` and `rules` are pure, deterministic functions with **no I/O**.
+- Each submodule under `bridge/` exposes functions; agents call rules/engine
+  functions and are passed a read-only copy of the game-state data, returning
+  a legal call or card without mutating shared state.
 - Randomness flows through an injectable seed for reproducibility.
 
 ## Conventions
 
+### Coding style (project guidelines — `prompts/start_up.md`)
+
+- **Use Python wherever possible.**
+- **Functions, not classes.** Write the logic as module-level functions
+  (methods) operating on simple, explicit data, rather than class hierarchies.
+- **Reuse existing code** before writing new code — search the package for a
+  function that already does the job and call it.
+- **Imports at the top of every file** (no inline / deferred imports).
+- **Every function has a docstring** that describes its **inputs and outputs**
+  (parameters, types, return value), plus the *bridge intent* where relevant.
+- **Add inline comments** explaining the reasoning/effort, not just restating
+  the code.
+- **All modules live under `bridge/`** (the package already has an
+  `__init__.py`). Add new submodules there.
+
+### General
+
 - **Python 3.14**, dependencies via **pip** (venv). Type hints on all public
   functions; check with `mypy`.
+- Use the "astro14" environment.  It has Python 3.14.
 - Format with `ruff format`; lint with `ruff`.
 - Tests with `pytest`; aim for fast, deterministic unit tests. Seed RNG.
-- Represent cards/suits/ranks as `enum`s or small frozen dataclasses, not
-  bare strings/ints — make illegal states unrepresentable where practical.
-- Prefer immutable value objects (`frozen=True` dataclasses) for game state
-  snapshots passed to agents.
-- Validate legality in `rules/`, not scattered across agents.
-- Docstrings explain *bridge intent*, not just code mechanics.
+- Represent cards/suits/ranks/state as simple, explicit data (e.g. plain
+  tuples, dicts, or `NamedTuple`/`Enum` constants) — not bare magic
+  strings/ints, and not behaviour-bearing classes. Functions transform this
+  data.
+- Validate legality in `rules/` functions, not scattered across agents.
 
 ## Dev commands
 
@@ -107,6 +125,15 @@ tested and green.
 5. **Baseline agents** — random-legal bot; simple heuristic defender/declarer.
 6. **Bidding system** — encode **SAYC** (opening, responding, basic
    conventions); leave room to add **2/1 Game Force** later.
+   *In progress:* SAYC encoded as declarative YAML rules under
+   `bridge/data/bidding/sayc/` with a loader/validator/matcher in
+   `bridge/bidding_systems/sayc_loader.py`. Covered (tested): all-seat
+   openings (Rule of 20/15, weak twos, preempts), responses to
+   1NT/major/minor/2C/weak-twos (Stayman, Jacoby transfers), key opener
+   rebids (transfer completion, Stayman replies, 2C→2NT), and Blackwood/
+   Gerber answers. See `docs/conventions.rst` for per-convention status.
+   Planned next: responder rebids, jump shifts, GSF, then competitive
+   bidding (`competitive.yaml`).
 7. **Card-play strategy** — double-dummy / Monte Carlo search for play;
    stronger declarer & defense.
 8. **Self-play & evaluation** — tournament harness, metrics (IMPs/MPs),

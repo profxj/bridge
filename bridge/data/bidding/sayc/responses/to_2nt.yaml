@@ -1,0 +1,54 @@
+# Responses to a 2NT opening (20-21 balanced).  Context: ["2NT","P"].
+# "Systems on": Stayman and Jacoby transfers operate one level higher than
+# over 1NT.  Opposite 20-21 the partnership is always worth game, so 3NT is
+# the no-major signoff and Pass is not used.
+#
+# Priority ladder:
+#   121  Jacoby transfer to spades (3H, 5+ spades)
+#   120  Jacoby transfer to hearts (3D, 5+ hearts)
+#   110  Stayman 3C (a four-card major)
+#    80  3NT to play (no four-card major)
+
+- id: resp_2nt_transfer_spades
+  call: "3H"
+  when: { auction: ["2NT", "P"], by: responder }
+  hand: { spades: [5, 13], atleast_as_long_as: [spades, hearts] }
+  priority: 121
+  alertable: true
+  why: "Jacoby transfer: 3H shows 5+ spades and asks opener to bid 3S."
+  source: "ACBL SAYC booklet — transfers over 2NT."
+
+- id: resp_2nt_transfer_hearts
+  call: "3D"
+  when: { auction: ["2NT", "P"], by: responder }
+  hand: { hearts: [5, 13], longer_than: [hearts, spades] }
+  priority: 120
+  alertable: true
+  why: "Jacoby transfer: 3D shows 5+ hearts and asks opener to bid 3H."
+  source: "ACBL SAYC booklet — transfers over 2NT."
+
+- id: resp_2nt_stayman_spades
+  call: "3C"
+  when: { auction: ["2NT", "P"], by: responder }
+  hand: { spades: [4, 4] }
+  priority: 110
+  alertable: true
+  why: "Stayman over 2NT: 3C asks for a four-card major (responder holds four spades)."
+  source: "ACBL SAYC booklet — Stayman over 2NT."
+
+- id: resp_2nt_stayman_hearts
+  call: "3C"
+  when: { auction: ["2NT", "P"], by: responder }
+  hand: { hearts: [4, 4] }
+  priority: 110
+  alertable: true
+  why: "Stayman over 2NT: 3C asks for a four-card major (responder holds four hearts)."
+  source: "ACBL SAYC booklet — Stayman over 2NT."
+
+- id: resp_2nt_3nt
+  call: "3NT"
+  when: { auction: ["2NT", "P"], by: responder }
+  hand: { hearts: [0, 3], spades: [0, 3] }
+  priority: 80
+  why: "No four-card major opposite 20-21: raise to 3NT to play."
+  source: "ACBL SAYC booklet — 2NT responses."

@@ -1,0 +1,52 @@
+# Responses to a strong, artificial 2C opening.  Context: ["2C","P"].
+#
+# 2D is the standard "waiting" response, used on most hands (including all weak
+# ones).  A natural suit bid is a *positive* response showing a good 5+ card
+# suit and roughly 8+ HCP; with two biddable suits the higher-ranking is shown.
+# (The classic "two of the top three honours" suit-quality test is a planned
+# refinement — the v1 matcher checks length and points, not the exact honours.)
+#
+# Priority ladder:
+#   53/52/51/50  positive suit responses (spades > hearts > diamonds > clubs)
+#   10           waiting 2D (default / all weak hands)
+
+- id: resp_2c_positive_2s
+  call: "2S"
+  when: { auction: ["2C", "P"], by: responder }
+  hand: { hcp: [8, 21], spades: [5, 13] }
+  priority: 53
+  why: "Positive response: a good 5+ card spade suit and ~8+ HCP."
+  source: "ACBL SAYC booklet — positive responses to 2C."
+
+- id: resp_2c_positive_2h
+  call: "2H"
+  when: { auction: ["2C", "P"], by: responder }
+  hand: { hcp: [8, 21], hearts: [5, 13] }
+  priority: 52
+  why: "Positive response: a good 5+ card heart suit and ~8+ HCP."
+  source: "ACBL SAYC booklet — positive responses to 2C."
+
+- id: resp_2c_positive_3d
+  call: "3D"
+  when: { auction: ["2C", "P"], by: responder }
+  hand: { hcp: [8, 21], diamonds: [5, 13] }
+  priority: 51
+  why: "Positive response: a good 5+ card diamond suit and ~8+ HCP."
+  source: "ACBL SAYC booklet — positive responses to 2C."
+
+- id: resp_2c_positive_3c
+  call: "3C"
+  when: { auction: ["2C", "P"], by: responder }
+  hand: { hcp: [8, 21], clubs: [5, 13] }
+  priority: 50
+  why: "Positive response: a good 5+ card club suit and ~8+ HCP."
+  source: "ACBL SAYC booklet — positive responses to 2C."
+
+- id: resp_2c_waiting_2d
+  call: "2D"
+  when: { auction: ["2C", "P"], by: responder }
+  hand: { hcp: [0, 21] }
+  priority: 10
+  alertable: true
+  why: "Waiting 2D: the standard relay response to a strong 2C, used on weak hands and most others."
+  source: "ACBL SAYC booklet — responses to 2C (2D waiting)."

@@ -1,0 +1,162 @@
+# Responses to a 1H or 1S opening (partner shows 5+ of the major, 11-21).
+# Context: auction ends ["1H","P"] or ["1S","P"].  Pass (0-5) is the default.
+#
+# Priority ladder (per major):
+#   120  limit raise (4+ support, 10-12)
+#   110  simple raise (3+ support, 6-9)
+#   100  new suit at the one level (1H -> 1S; forcing, 4+, 6+)
+#    95  new suit at the two level (forcing, 4+, 11+)
+#    85  game raise (5+ support, 13-16, to play)
+#    80  natural 2NT/3NT (balanced, no major fit shown lower)
+#    70  1NT non-forcing (6-9, no fit, no biddable major)
+#
+# Note: with 3-card support and 6-9 we raise partner's known five-card major
+# rather than introduce a new suit (raise outranks the 1-level new suit).
+
+# ============================ responses to 1H =============================
+
+- id: resp_1h_limit_raise
+  call: "3H"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [10, 12], hearts: [4, 13] }
+  priority: 120
+  why: "Limit raise: 4+ hearts, 10-12 support points, invitational."
+  source: "ACBL SAYC booklet — major-suit limit raise."
+
+- id: resp_1h_simple_raise
+  call: "2H"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [6, 9], hearts: [3, 13] }
+  priority: 110
+  why: "Simple raise: 3+ hearts, 6-9 points."
+  source: "ACBL SAYC booklet — single raise."
+
+- id: resp_1h_game_raise
+  call: "4H"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [13, 16], hearts: [5, 13] }
+  priority: 85
+  why: "Game raise to play: 5+ hearts and opening values (no slam interest)."
+  source: "ACBL SAYC booklet — raising opener's major."
+
+- id: resp_1h_1s
+  call: "1S"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [6, 21], spades: [4, 13] }
+  priority: 100
+  why: "New suit at the one level: 4+ spades, 6+ points, forcing one round."
+  source: "ACBL SAYC booklet — new suit forcing."
+
+- id: resp_1h_2c
+  call: "2C"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [11, 21], clubs: [4, 13] }
+  priority: 95
+  why: "New suit at the two level: 4+ clubs, 11+ points, forcing."
+  source: "ACBL SAYC booklet — two-level new suit."
+
+- id: resp_1h_2d
+  call: "2D"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [11, 21], diamonds: [4, 13] }
+  priority: 95
+  why: "New suit at the two level: 4+ diamonds, 11+ points, forcing."
+  source: "ACBL SAYC booklet — two-level new suit."
+
+- id: resp_1h_3nt
+  call: "3NT"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [13, 15], balanced: true }
+  priority: 80
+  why: "Balanced 13-15 with no cheaper forcing bid: raise to 3NT (opener may convert)."
+  source: "ACBL SAYC booklet — notrump responses."
+
+- id: resp_1h_2nt
+  call: "2NT"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [11, 12], balanced: true, hearts: [0, 2], spades: [0, 3] }
+  priority: 80
+  why: "Balanced 11-12, no fit and no four-card major: natural invitational 2NT."
+  source: "ACBL SAYC booklet — notrump responses."
+
+- id: resp_1h_1nt
+  call: "1NT"
+  when: { auction: ["1H", "P"], by: responder }
+  hand: { hcp: [6, 9], hearts: [0, 2], spades: [0, 3] }
+  priority: 70
+  why: "Non-forcing 1NT: 6-9, no heart fit and no four-card spade suit."
+  source: "ACBL SAYC booklet — non-forcing 1NT response."
+
+# ============================ responses to 1S =============================
+
+- id: resp_1s_limit_raise
+  call: "3S"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [10, 12], spades: [4, 13] }
+  priority: 120
+  why: "Limit raise: 4+ spades, 10-12 support points, invitational."
+  source: "ACBL SAYC booklet — major-suit limit raise."
+
+- id: resp_1s_simple_raise
+  call: "2S"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [6, 9], spades: [3, 13] }
+  priority: 110
+  why: "Simple raise: 3+ spades, 6-9 points."
+  source: "ACBL SAYC booklet — single raise."
+
+- id: resp_1s_game_raise
+  call: "4S"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [13, 16], spades: [5, 13] }
+  priority: 85
+  why: "Game raise to play: 5+ spades and opening values (no slam interest)."
+  source: "ACBL SAYC booklet — raising opener's major."
+
+- id: resp_1s_2h
+  call: "2H"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [11, 21], hearts: [4, 13] }
+  priority: 95
+  why: "New suit at the two level: 4+ hearts, 11+ points, forcing."
+  source: "ACBL SAYC booklet — two-level new suit."
+
+- id: resp_1s_2c
+  call: "2C"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [11, 21], clubs: [4, 13] }
+  priority: 95
+  why: "New suit at the two level: 4+ clubs, 11+ points, forcing."
+  source: "ACBL SAYC booklet — two-level new suit."
+
+- id: resp_1s_2d
+  call: "2D"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [11, 21], diamonds: [4, 13] }
+  priority: 95
+  why: "New suit at the two level: 4+ diamonds, 11+ points, forcing."
+  source: "ACBL SAYC booklet — two-level new suit."
+
+- id: resp_1s_3nt
+  call: "3NT"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [13, 15], balanced: true }
+  priority: 80
+  why: "Balanced 13-15 with no cheaper forcing bid: raise to 3NT (opener may convert)."
+  source: "ACBL SAYC booklet — notrump responses."
+
+- id: resp_1s_2nt
+  call: "2NT"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [11, 12], balanced: true, spades: [0, 2], hearts: [0, 3] }
+  priority: 80
+  why: "Balanced 11-12, no fit and no four-card heart suit: natural invitational 2NT."
+  source: "ACBL SAYC booklet — notrump responses."
+
+- id: resp_1s_1nt
+  call: "1NT"
+  when: { auction: ["1S", "P"], by: responder }
+  hand: { hcp: [6, 9], spades: [0, 2] }
+  priority: 70
+  why: "Non-forcing 1NT: 6-9 with no spade fit."
+  source: "ACBL SAYC booklet — non-forcing 1NT response."

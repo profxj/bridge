@@ -1,0 +1,53 @@
+# Gerber: 4C ace-ask used after a natural notrump opening.  Context here is a
+# 1NT opening followed by 4C -> auction ends ["1NT","P","4C","P"].  Responder
+# (the 1NT opener) shows aces in steps:
+#
+#   4D = 0 or 4 aces    4H = 1 ace    4S = 2 aces    4NT = 3 aces
+#
+# Restricting the context to a 1NT-then-4C sequence keeps a natural 4C bid in
+# other auctions from being misread as Gerber.  (Gerber over 2NT is planned.)
+
+- id: gerber_4d_0_aces
+  call: "4D"
+  when: { auction: ["1NT", "P", "4C", "P"], by: opener }
+  hand: { aces: [0, 0] }
+  priority: 100
+  alertable: true
+  why: "Gerber answer: 4D shows 0 aces."
+  source: "ACBL SAYC booklet — Gerber 4C."
+
+- id: gerber_4d_4_aces
+  call: "4D"
+  when: { auction: ["1NT", "P", "4C", "P"], by: opener }
+  hand: { aces: [4, 4] }
+  priority: 100
+  alertable: true
+  why: "Gerber answer: 4D shows 4 aces (same step as 0)."
+  source: "ACBL SAYC booklet — Gerber 4C."
+
+- id: gerber_4h_1_ace
+  call: "4H"
+  when: { auction: ["1NT", "P", "4C", "P"], by: opener }
+  hand: { aces: [1, 1] }
+  priority: 100
+  alertable: true
+  why: "Gerber answer: 4H shows 1 ace."
+  source: "ACBL SAYC booklet — Gerber 4C."
+
+- id: gerber_4s_2_aces
+  call: "4S"
+  when: { auction: ["1NT", "P", "4C", "P"], by: opener }
+  hand: { aces: [2, 2] }
+  priority: 100
+  alertable: true
+  why: "Gerber answer: 4S shows 2 aces."
+  source: "ACBL SAYC booklet — Gerber 4C."
+
+- id: gerber_4nt_3_aces
+  call: "4NT"
+  when: { auction: ["1NT", "P", "4C", "P"], by: opener }
+  hand: { aces: [3, 3] }
+  priority: 100
+  alertable: true
+  why: "Gerber answer: 4NT shows 3 aces."
+  source: "ACBL SAYC booklet — Gerber 4C."

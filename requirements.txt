@@ -1,0 +1,5 @@
+# Runtime dependencies for the bridge bot.
+# Dev/test tooling (pytest, ruff, mypy, types-PyYAML) lives in the
+# "dev" optional-dependencies group in pyproject.toml:
+#     pip install -e ".[dev]"
+PyYAML>=6.0

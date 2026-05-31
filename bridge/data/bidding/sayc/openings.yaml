@@ -1,0 +1,267 @@
+# SAYC opening bids (uncontested; this player makes the first genuine call).
+#
+# Every rule's `when.auction: []` means "no genuine call yet" — all earlier
+# calls are passes — so these fire for the opening call in any seat. Higher
+# `priority` wins when several rules match; the priority ladder encodes SAYC's
+# preference order:
+#
+#   200  2C strong, artificial      (22+ HCP)        -- beats everything
+#   190  2NT                        (20-21 balanced)
+#   180  1NT                        (15-17 balanced)
+#   100  one of a suit, sound       (13-21)
+#    95  one of a suit, light       (Rule of 20 / Rule of 15)
+#    70  weak two                   (5-11, six-card suit)
+#    60  three-level preempt        (5-11, seven-card suit)
+#    55  four-level preempt         (5-11, eight-card suit)
+#
+# Suit selection among one-level openings:
+#   * A major opens only when it is the *longest* suit (5+). With two five-card
+#     suits the higher-ranking opens, so 1S uses `longest_suit: S` (ties to
+#     spades) while 1H additionally requires hearts strictly longer than spades.
+#   * Otherwise open a minor: the longer minor; with equal minors open 1D when
+#     4-4 (or 5-5) and 1C when 3-3.
+
+# ---------------------------------------------------------------- strong / NT
+
+- id: open_2c_strong
+  call: "2C"
+  when: { auction: [], by: opener }
+  hand: { hcp: [22, 40] }
+  priority: 200
+  alertable: true
+  why: "Strong, artificial: 22+ HCP (or ~9 playing tricks). Game-forcing except after 2C-2D-2NT."
+  source: "ACBL SAYC booklet — strong 2C."
+
+- id: open_2nt
+  call: "2NT"
+  when: { auction: [], by: opener }
+  hand: { hcp: [20, 21], balanced: true }
+  priority: 190
+  why: "Balanced 20-21 HCP."
+  source: "ACBL SAYC booklet — 2NT opening."
+
+- id: open_1nt
+  call: "1NT"
+  when: { auction: [], by: opener }
+  hand: { hcp: [15, 17], balanced: true }
+  priority: 180
+  why: "Balanced 15-17 HCP; the SAYC strong notrump (may hold a five-card suit)."
+  source: "ACBL SAYC booklet — 1NT opening."
+
+# --------------------------------------------------- sound one-of-a-suit (13-21)
+
+- id: open_1s
+  call: "1S"
+  when: { auction: [], by: opener }
+  hand: { hcp: [13, 21], spades: [5, 13], longest_suit: spades }
+  priority: 100
+  why: "5+ spades, 13-21; spades the longest suit (higher of two five-card suits)."
+  source: "ACBL SAYC booklet — five-card majors."
+
+- id: open_1h
+  call: "1H"
+  when: { auction: [], by: opener }
+  hand:
+    hcp: [13, 21]
+    hearts: [5, 13]
+    longest_suit: hearts
+    longer_than: [hearts, spades]
+  priority: 100
+  why: "5+ hearts, 13-21; hearts the longest suit and longer than spades."
+  source: "ACBL SAYC booklet — five-card majors."
+
+- id: open_1d
+  call: "1D"
+  when: { auction: [], by: opener }
+  hand: { hcp: [13, 21], diamonds: [4, 13], atleast_as_long_as: [diamonds, clubs] }
+  priority: 100
+  why: "No five-card major; open the longer minor — 1D with diamonds >= clubs and 4+ diamonds (covers 4-4 and 5-5 minors)."
+  source: "ACBL SAYC booklet — minor openings."
+
+- id: open_1d_long
+  call: "1D"
+  when: { auction: [], by: opener }
+  hand: { hcp: [13, 21], diamonds: [5, 13], longer_than: [diamonds, clubs] }
+  priority: 101
+  why: "No five-card major; diamonds strictly longer than clubs."
+  source: "ACBL SAYC booklet — minor openings."
+
+- id: open_1c
+  call: "1C"
+  when: { auction: [], by: opener }
+  hand: { hcp: [13, 21], clubs: [3, 13], longer_than: [clubs, diamonds] }
+  priority: 100
+  why: "No five-card major; clubs strictly longer than diamonds."
+  source: "ACBL SAYC booklet — minor openings."
+
+- id: open_1c_33
+  call: "1C"
+  when: { auction: [], by: opener }
+  hand: { hcp: [13, 21], clubs: [3, 3], diamonds: [3, 3] }
+  priority: 100
+  why: "No five-card major and 3-3 in the minors: open 1C (the 'better minor' default)."
+  source: "ACBL SAYC booklet — minor openings (3-3 minors -> 1C)."
+
+# --------------------------------- light one-of-a-suit: Rule of 20 (seats 1-2)
+
+- id: open_1s_r20
+  call: "1S"
+  when: { auction: [], by: opener, seat: [1, 2] }
+  hand: { hcp: [11, 12], spades: [5, 13], longest_suit: spades, rule_of_20: true }
+  priority: 95
+  why: "Light 1st/2nd-seat opening: shapely 11-12 with 5+ spades passing the Rule of 20."
+  source: "SAYC practice — Rule of 20 light openers."
+
+- id: open_1h_r20
+  call: "1H"
+  when: { auction: [], by: opener, seat: [1, 2] }
+  hand:
+    hcp: [11, 12]
+    hearts: [5, 13]
+    longest_suit: hearts
+    longer_than: [hearts, spades]
+    rule_of_20: true
+  priority: 95
+  why: "Light 1st/2nd-seat opening: 5+ hearts (longest) passing the Rule of 20."
+  source: "SAYC practice — Rule of 20 light openers."
+
+- id: open_1d_r20
+  call: "1D"
+  when: { auction: [], by: opener, seat: [1, 2] }
+  hand:
+    hcp: [11, 12]
+    diamonds: [4, 13]
+    atleast_as_long_as: [diamonds, clubs]
+    rule_of_20: true
+  priority: 95
+  why: "Light 1st/2nd-seat minor opening (Rule of 20); longer/equal diamonds."
+  source: "SAYC practice — Rule of 20 light openers."
+
+- id: open_1c_r20
+  call: "1C"
+  when: { auction: [], by: opener, seat: [1, 2] }
+  hand:
+    hcp: [11, 12]
+    clubs: [3, 13]
+    longer_than: [clubs, diamonds]
+    rule_of_20: true
+  priority: 95
+  why: "Light 1st/2nd-seat minor opening (Rule of 20); clubs longer than diamonds."
+  source: "SAYC practice — Rule of 20 light openers."
+
+# ------------------------------- light one-of-a-suit: Rule of 15 (seats 3-4)
+
+- id: open_1s_r15
+  call: "1S"
+  when: { auction: [], by: opener, seat: [3, 4] }
+  hand: { hcp: [10, 12], spades: [5, 13], longest_suit: spades, rule_of_15: true }
+  priority: 95
+  why: "Light 3rd/4th-seat opening with spades passing the Rule of 15 (HCP + spades >= 15)."
+  source: "SAYC practice — Rule of 15 (3rd/4th seat)."
+
+- id: open_1h_r15
+  call: "1H"
+  when: { auction: [], by: opener, seat: [3, 4] }
+  hand:
+    hcp: [10, 12]
+    hearts: [5, 13]
+    longest_suit: hearts
+    longer_than: [hearts, spades]
+    rule_of_15: true
+  priority: 95
+  why: "Light 3rd/4th-seat opening: 5+ hearts (longest) with Rule of 15 spade insurance."
+  source: "SAYC practice — Rule of 15 (3rd/4th seat)."
+
+# --------------------------------------------------- weak two-bids (5-11, six)
+
+- id: open_2d_weak
+  call: "2D"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], diamonds: [6, 6] }
+  priority: 70
+  why: "Weak two: a good six-card diamond suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — weak two-bids."
+
+- id: open_2h_weak
+  call: "2H"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], hearts: [6, 6] }
+  priority: 70
+  why: "Weak two: a good six-card heart suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — weak two-bids."
+
+- id: open_2s_weak
+  call: "2S"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], spades: [6, 6] }
+  priority: 70
+  why: "Weak two: a good six-card spade suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — weak two-bids."
+
+# ------------------------------------------ three-level preempts (5-11, seven)
+
+- id: open_3c_preempt
+  call: "3C"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], clubs: [7, 7] }
+  priority: 60
+  why: "Preempt: seven-card club suit, 5-11 HCP (Rule of 2/3/4 governs the level)."
+  source: "ACBL SAYC booklet — preempts."
+
+- id: open_3d_preempt
+  call: "3D"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], diamonds: [7, 7] }
+  priority: 60
+  why: "Preempt: seven-card diamond suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."
+
+- id: open_3h_preempt
+  call: "3H"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], hearts: [7, 7] }
+  priority: 60
+  why: "Preempt: seven-card heart suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."
+
+- id: open_3s_preempt
+  call: "3S"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], spades: [7, 7] }
+  priority: 60
+  why: "Preempt: seven-card spade suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."
+
+# ------------------------------------------- four-level preempts (5-11, eight)
+
+- id: open_4c_preempt
+  call: "4C"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], clubs: [8, 13] }
+  priority: 55
+  why: "Preempt: eight-card club suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."
+
+- id: open_4d_preempt
+  call: "4D"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], diamonds: [8, 13] }
+  priority: 55
+  why: "Preempt: eight-card diamond suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."
+
+- id: open_4h_preempt
+  call: "4H"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], hearts: [8, 13] }
+  priority: 55
+  why: "Preempt to game: eight-card heart suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."
+
+- id: open_4s_preempt
+  call: "4S"
+  when: { auction: [], by: opener }
+  hand: { hcp: [5, 11], spades: [8, 13] }
+  priority: 55
+  why: "Preempt to game: eight-card spade suit, 5-11 HCP."
+  source: "ACBL SAYC booklet — preempts."

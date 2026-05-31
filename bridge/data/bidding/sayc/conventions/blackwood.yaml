@@ -1,0 +1,52 @@
+# Blackwood: responses to a 4NT ace-ask.  Context: partner bid 4NT, RHO
+# passed -> auction ends ["4NT","P"].  Responder shows the number of aces.
+#
+#   5C = 0 or 4 aces    5D = 1 ace    5H = 2 aces    5S = 3 aces
+#
+# (Plain SAYC uses standard Blackwood, not Roman Key Card.)  In a suit auction
+# 4NT is Blackwood; distinguishing a quantitative 4NT is left to the engine.
+
+- id: blackwood_5c_0_aces
+  call: "5C"
+  when: { auction: ["4NT", "P"], by: responder }
+  hand: { aces: [0, 0] }
+  priority: 100
+  alertable: true
+  why: "Blackwood answer: 5C shows 0 aces."
+  source: "ACBL SAYC booklet — Blackwood 4NT."
+
+- id: blackwood_5c_4_aces
+  call: "5C"
+  when: { auction: ["4NT", "P"], by: responder }
+  hand: { aces: [4, 4] }
+  priority: 100
+  alertable: true
+  why: "Blackwood answer: 5C shows 4 aces (same step as 0)."
+  source: "ACBL SAYC booklet — Blackwood 4NT."
+
+- id: blackwood_5d_1_ace
+  call: "5D"
+  when: { auction: ["4NT", "P"], by: responder }
+  hand: { aces: [1, 1] }
+  priority: 100
+  alertable: true
+  why: "Blackwood answer: 5D shows 1 ace."
+  source: "ACBL SAYC booklet — Blackwood 4NT."
+
+- id: blackwood_5h_2_aces
+  call: "5H"
+  when: { auction: ["4NT", "P"], by: responder }
+  hand: { aces: [2, 2] }
+  priority: 100
+  alertable: true
+  why: "Blackwood answer: 5H shows 2 aces."
+  source: "ACBL SAYC booklet — Blackwood 4NT."
+
+- id: blackwood_5s_3_aces
+  call: "5S"
+  when: { auction: ["4NT", "P"], by: responder }
+  hand: { aces: [3, 3] }
+  priority: 100
+  alertable: true
+  why: "Blackwood answer: 5S shows 3 aces."
+  source: "ACBL SAYC booklet — Blackwood 4NT."

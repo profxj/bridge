@@ -1,0 +1,6 @@
+# Responder's rebids (second call by responder).
+#
+# PLANNED — not yet encoded.  Responder's rebids (preference, fourth-suit
+# forcing, invitational/forcing sequences, completing a major-suit game after
+# a transfer) depend on the full two-round auction context.  This file is an
+# intentional placeholder so the layout is complete; it loads as no rules.
