@@ -105,6 +105,15 @@ def test_open_1d_longer_diamonds(rules):
     assert opening(rules, hand) == "1D"
 
 
+def test_open_1d_better_minor_4432(rules):
+    # 14 HCP, 4-4 majors, 3-2 minors (3 diamonds, 2 clubs): no four-card minor
+    # and no five-card major, so open the longer minor -> 1D (better minor).
+    hand = {"S": "AK32", "H": "AQ32", "D": "J54", "C": "98"}
+    assert sl.high_card_points(hand) == 14
+    assert sl.suit_lengths(hand) == {"S": 4, "H": 4, "D": 3, "C": 2}
+    assert opening(rules, hand) == "1D"
+
+
 # --- light openers: Rule of 20 (seats 1-2) ---------------------------------
 
 

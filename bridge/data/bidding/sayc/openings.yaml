@@ -102,6 +102,19 @@
   why: "No five-card major and 3-3 in the minors: open 1C (the 'better minor' default)."
   source: "ACBL SAYC booklet — minor openings (3-3 minors -> 1C)."
 
+- id: open_1d_better_minor
+  call: "1D"
+  when: { auction: [], by: opener }
+  # 4-4 in the majors (so no five-card major) with a 3-2 minor split: neither
+  # minor is four cards, so the earlier minor rules (which need 4+ diamonds or
+  # clubs strictly longer) all miss. SAYC opens the *longer* minor, 1D, on the
+  # three-card suit. This closes a coverage gap surfaced by the inference
+  # soundness check (a 13+ HCP hand that otherwise had no legal opening).
+  hand: { hcp: [13, 21], spades: [4, 4], hearts: [4, 4], diamonds: [3, 3], clubs: [2, 2] }
+  priority: 100
+  why: "No five-card major; 4-4 majors with a 3-2 minor split — open the longer (better) minor, 1D."
+  source: "ACBL SAYC booklet — better-minor openings (open the longer minor)."
+
 # --------------------------------- light one-of-a-suit: Rule of 20 (seats 1-2)
 
 - id: open_1s_r20
