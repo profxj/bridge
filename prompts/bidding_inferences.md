@@ -25,6 +25,8 @@ The Bot will have a knowledge base that will be used to store the inferences.  T
 
 ## Examples
 
+1. The Notebooks are not rendering on GitHub, only in my JupyterLab.  Can you check this?  
+
 ## Planning
 
 ### Core idea: invert the SAYC rules
@@ -238,12 +240,15 @@ Use yes, discount denials.
 
 1. Generate the code according to the plan.  Generate a Python Notebook in nb/ named bidding_inferences.ipynb.  Use it to show how well the bidding inferences work.
 
+## Docs
+
+1. Because I am struggling to render the Notebooks on GitHub, please generate a markdown version and place it in the docs/bidding_inferences.md file.  Please do the same for the other Notebook in nb/ named sayc_bidding.ipynb.
+
 ## Prompts
 
-1. Read this doc.  Generate a plan to develop the process for making inferences from the bidding and keeping track of the inferences in a knowledge base.  If you have any questions, put them under the Clarifying questions section.
-
-2. Read this doc.  See my answers to the clarifying questions.  Make any necessary adjustments to the plan and ask any additional questions as needed.
-
-3. Read this doc.  See my answers to the new clarifying questions.  Make any necessary adjustments to the plan and ask any additional questions as needed.
-
-4. Read this doc.  Proceed with the plan by executing the first item in the Development section.
+1. Read this file.  Generate a plan to develop the process for making inferences from the bidding and keeping track of the inferences in a knowledge base.  If you have any questions, put them under the Clarifying questions section.
+2. Read this file.  See my answers to the clarifying questions.  Make any necessary adjustments to the plan and ask any additional questions as needed.
+3. Read this file.  See my answers to the new clarifying questions.  Make any necessary adjustments to the plan and ask any additional questions as needed.
+4. Read this file.  Proceed with the plan by executing the first item in the Development section.
+5. Read this file.  Execute the 1st directive under Examples
+6. Read this file.  Execute the 1st directive under Docs
