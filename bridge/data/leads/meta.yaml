@@ -1,0 +1,21 @@
+# Metadata for the standard opening-leads knowledge base.
+system: "Standard (ACBL SAYC) opening leads"
+version: "0.1"
+
+# Default spot-lead style and the opt-in alternative.
+default_system: sayc          # fourth best (partner uses the Rule of 11)
+systems:
+  sayc: "Fourth best from length & strength; SAYC 'Defensive Leads and Signals'."
+  three_five: "Third/fifth best (3rd from even length, 5th from odd); applied vs suit contracts only."
+
+# Carding (used by the `signal` field on rules; informs future play inferences).
+signals:
+  attitude: "High encourages, low discourages."
+  count: "High-low shows an even number; low-high shows odd."
+
+sources:
+  - "ACBL SAYC System Booklet — Defensive Leads and Signals (primary)."
+  - "https://en.wikipedia.org/wiki/Opening_lead"
+  - "https://www.bridgebum.com/standard_leads.php"
+  - "https://pi.math.cornell.edu/~belk/Leads.htm"
+  - "https://en.wikipedia.org/wiki/Rule_of_eleven"

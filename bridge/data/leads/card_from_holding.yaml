@@ -1,0 +1,211 @@
+# Which CARD to lead from a chosen suit holding.
+#
+# Context: "suit" = a trump contract, "nt" = notrump. System: "sayc" (fourth
+# best, default) or "three_five" (third/fifth best, vs suits only). Rules with
+# `system: any` are shared by both styles. Higher `priority` wins when several
+# rules match; the ladder encodes the standard order of preference:
+#
+#   100  singleton                       (lead it)
+#    95  doubleton                       (top)
+#    90  three+ card sequence from top   (top of sequence)
+#    86  any holding with the ace, vs a suit   (never underlead an ace)
+#    85  A K at top                      (suit: ace; NT: king)
+#    81  two touching honours, long, NT  (fourth best to set up length)
+#    80  two touching honours at top     (suit: top; NT 3-card: top)
+#    78  interior sequence               (top of the interior run)
+#    72  3rd/5th best, vs suits          (only when that system is selected)
+#    70  fourth best from length+honour  (SAYC default)
+#    65  long suit, no honour            (second highest — SAYC exception)
+#    60  three small                     (suit: low; NT: high "top of nothing")
+#    55  three cards with one honour     (low from the honour / third best)
+
+# ---------------------------------------------------------------- short suits
+
+- id: lead_singleton
+  context: [suit, nt]
+  system: any
+  holding: { singleton: true }
+  lead: top
+  signal: none
+  priority: 100
+  shows: "Singleton lead — often hunting for a ruff against a suit contract."
+  source: "Standard practice."
+  tag: standard
+
+- id: lead_doubleton
+  context: [suit, nt]
+  system: any
+  holding: { doubleton: true }
+  lead: top
+  signal: count
+  priority: 95
+  shows: "Top of a doubleton; the following high-low shows an even (two) count."
+  source: "ACBL SAYC booklet — leads; standard practice."
+  tag: standard
+
+# ------------------------------------------------------------- honour leads
+
+- id: lead_top_of_sequence
+  context: [suit, nt]
+  system: any
+  holding: { sequence_from_top: 3 }
+  lead: top
+  signal: attitude
+  priority: 90
+  shows: "Top of a 3+ card sequence (e.g. K from KQJ): promises the next
+          touching cards, denies a higher honour."
+  source: "ACBL SAYC booklet — top of touching honours."
+  tag: sayc
+
+- id: lead_ace_vs_suit
+  context: [suit]
+  system: any
+  holding: { has_ace: true }
+  lead: top
+  signal: attitude
+  priority: 86
+  shows: "Lead the ace from any ace holding vs a suit — never underlead an ace
+          against a trump contract."
+  source: "Standard practice (Cornell/Belk; Bridge Bum)."
+  tag: standard
+
+- id: lead_ak_vs_suit
+  context: [suit]
+  system: any
+  holding: { ak_top: true }
+  lead: top
+  signal: attitude
+  priority: 85
+  shows: "Ace from A K vs a suit (then the king) — asks for attitude."
+  source: "ACBL SAYC booklet — the ace is led from A K x vs suits."
+  tag: sayc
+
+- id: lead_ak_vs_nt
+  context: [nt]
+  system: any
+  holding: { ak_top: true }
+  lead: second_highest
+  signal: attitude
+  priority: 85
+  shows: "King from A K vs notrump — asks partner to unblock an honour or
+          signal count."
+  source: "Standard practice (Cornell/Belk; Bridge Bum)."
+  tag: standard
+
+- id: lead_two_honours_nt_long
+  context: [nt]
+  system: any
+  holding: { two_touching_top: true, length: [4, 13] }
+  lead: fourth_highest
+  signal: attitude
+  priority: 81
+  shows: "From two touching honours in a long suit vs NT, lead fourth best to
+          develop the suit's length."
+  source: "Standard practice (Cornell/Belk)."
+  tag: standard
+
+- id: lead_two_honours_vs_suit
+  context: [suit]
+  system: any
+  holding: { two_touching_top: true }
+  lead: top
+  signal: attitude
+  priority: 80
+  shows: "Top of two touching honours vs a suit (e.g. K from KQxxx)."
+  source: "ACBL SAYC booklet — top of touching honours."
+  tag: sayc
+
+- id: lead_two_honours_nt_short
+  context: [nt]
+  system: any
+  holding: { two_touching_top: true, length: [2, 3] }
+  lead: top
+  signal: attitude
+  priority: 80
+  shows: "Top of two touching honours in a short suit vs NT."
+  source: "Standard practice (Cornell/Belk)."
+  tag: standard
+
+- id: lead_interior_sequence
+  context: [suit, nt]
+  system: any
+  holding: { interior_sequence: 2 }
+  lead: top_of_interior_sequence
+  signal: attitude
+  priority: 78
+  shows: "Top of an interior sequence (e.g. J from KJ10, 10 from K109)."
+  source: "ACBL SAYC booklet — top from an interior sequence."
+  tag: sayc
+
+# ----------------------------------------------------- spot leads from length
+
+- id: lead_third_fifth_vs_suit
+  context: [suit]
+  system: three_five
+  holding: { length: [4, 13], has_honor: true }
+  lead: third_or_fifth
+  signal: count
+  priority: 72
+  shows: "Third/fifth best vs a suit: 3rd from an even-length suit, 5th (the
+          lowest) from odd — partner reads length via the Rule of 10/12."
+  source: "Standard 3rd/5th-best agreement; https://en.wikipedia.org/wiki/Rule_of_eleven"
+  tag: standard
+
+- id: lead_fourth_best
+  context: [suit, nt]
+  system: any
+  holding: { length: [4, 13], has_honor: true }
+  lead: fourth_highest
+  signal: count
+  priority: 70
+  shows: "Fourth best from length and strength — partner applies the Rule of 11."
+  source: "ACBL SAYC booklet — leads are fourth best."
+  tag: sayc
+
+- id: lead_second_highest_no_honour
+  context: [suit, nt]
+  system: any
+  holding: { length: [4, 13], has_honor: false }
+  lead: second_highest
+  signal: count
+  priority: 65
+  shows: "Second highest from a long suit with no honour (the SAYC systemic
+          exception to fourth best)."
+  source: "ACBL SAYC booklet — 4+ without an honour: lead the second highest."
+  tag: sayc
+
+# --------------------------------------------------------- three-card holdings
+
+- id: lead_three_small_vs_suit
+  context: [suit]
+  system: any
+  holding: { three_small: true }
+  lead: lowest
+  signal: count
+  priority: 60
+  shows: "Low from three small vs a suit."
+  source: "ACBL SAYC booklet — three low cards vs a suit: lead low."
+  tag: sayc
+
+- id: lead_three_small_vs_nt
+  context: [nt]
+  system: any
+  holding: { three_small: true }
+  lead: top
+  signal: count
+  priority: 60
+  shows: "High ('top of nothing') from three small vs notrump."
+  source: "ACBL SAYC booklet — three low cards vs notrump: lead high."
+  tag: sayc
+
+- id: lead_low_from_honour_three
+  context: [suit, nt]
+  system: any
+  holding: { length: [3, 3], has_honor: true }
+  lead: lowest
+  signal: attitude
+  priority: 55
+  shows: "Low from a three-card suit with one honour (third best / low from
+          an honour)."
+  source: "Standard practice (Bridge Bum; Cornell/Belk)."
+  tag: standard
