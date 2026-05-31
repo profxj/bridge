@@ -1,0 +1,9 @@
+# Grand Slam Force (5NT): asks partner to bid a grand slam in the agreed trump
+# suit holding two of the top three trump honours, otherwise to stop in six.
+#
+# PLANNED — not yet encoded.  Answering 5NT correctly requires knowing the
+# agreed trump suit (from the auction) and the responder's holding of the top
+# three honours in *that* suit; the v1 matcher tracks suit lengths and ace/king
+# counts but not per-suit honour combinations relative to a negotiated trump
+# suit.  This file is an intentional placeholder so the layout is complete; it
+# loads as no rules.

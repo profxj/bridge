@@ -1,0 +1,129 @@
+# Responses to a 1C or 1D opening (3+ of the minor, 11-21).
+# Context: auction ends ["1C","P"] or ["1D","P"].  Pass (0-5) is the default.
+#
+# Four-card suits are shown "up the line" (cheapest first): after 1C the
+# priority orders 1D > 1H > 1S; a four-card major is still shown at the one
+# level.  This is a basic encoding — refined length/up-the-line tie-breaks
+# (e.g. a five-card major bypassing a four-card diamond suit) are planned.
+#
+# Minor raises are INVERTED (alertable): the single raise (1C-2C / 1D-2D) is
+# the strong, forcing raise (10+), and the jump raise (1C-3C / 1D-3D) is weak
+# and preemptive (5-9).  Both deny a four-card major (you would show it first).
+#
+# Priority ladder:
+#   102/101/100  one-level new suit, cheapest first (a four-card major first)
+#    96  inverted minor raise (strong single / weak jump)
+#    80  natural 2NT (13-15 balanced, no four-card major)
+#    70  1NT (6-10, no four-card major)
+
+# ============================ responses to 1C =============================
+
+- id: resp_1c_inverted_2c
+  call: "2C"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [10, 21], clubs: [5, 13], hearts: [0, 3], spades: [0, 3] }
+  priority: 96
+  alertable: true
+  why: "Inverted minor: a single raise to 2C is the strong, forcing club raise (10+, no four-card major)."
+  source: "ACBL SAYC booklet — inverted minor raises."
+
+- id: resp_1c_inverted_3c
+  call: "3C"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [5, 9], clubs: [5, 13], hearts: [0, 3], spades: [0, 3] }
+  priority: 96
+  alertable: true
+  why: "Inverted minor: the jump raise to 3C is weak and preemptive (5-9, 5+ clubs, no four-card major)."
+  source: "ACBL SAYC booklet — inverted minor raises."
+
+- id: resp_1c_1d
+  call: "1D"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [6, 21], diamonds: [4, 13] }
+  priority: 102
+  why: "Up the line: 4+ diamonds, 6+ points, forcing one round."
+  source: "ACBL SAYC booklet — responses up the line."
+
+- id: resp_1c_1h
+  call: "1H"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [6, 21], hearts: [4, 13] }
+  priority: 101
+  why: "4+ hearts, 6+ points, forcing one round."
+  source: "ACBL SAYC booklet — responses up the line."
+
+- id: resp_1c_1s
+  call: "1S"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [6, 21], spades: [4, 13] }
+  priority: 100
+  why: "4+ spades, 6+ points, forcing one round."
+  source: "ACBL SAYC booklet — responses up the line."
+
+- id: resp_1c_2nt
+  call: "2NT"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [13, 15], balanced: true, hearts: [0, 3], spades: [0, 3] }
+  priority: 80
+  why: "Balanced 13-15 with no four-card major: natural 2NT."
+  source: "ACBL SAYC booklet — notrump responses to a minor."
+
+- id: resp_1c_1nt
+  call: "1NT"
+  when: { auction: ["1C", "P"], by: responder }
+  hand: { hcp: [6, 10], hearts: [0, 3], spades: [0, 3] }
+  priority: 70
+  why: "6-10 with no four-card major: natural 1NT."
+  source: "ACBL SAYC booklet — notrump responses to a minor."
+
+# ============================ responses to 1D =============================
+
+- id: resp_1d_inverted_2d
+  call: "2D"
+  when: { auction: ["1D", "P"], by: responder }
+  hand: { hcp: [10, 21], diamonds: [4, 13], hearts: [0, 3], spades: [0, 3] }
+  priority: 96
+  alertable: true
+  why: "Inverted minor: a single raise to 2D is the strong, forcing diamond raise (10+, no four-card major)."
+  source: "ACBL SAYC booklet — inverted minor raises."
+
+- id: resp_1d_inverted_3d
+  call: "3D"
+  when: { auction: ["1D", "P"], by: responder }
+  hand: { hcp: [5, 9], diamonds: [5, 13], hearts: [0, 3], spades: [0, 3] }
+  priority: 96
+  alertable: true
+  why: "Inverted minor: the jump raise to 3D is weak and preemptive (5-9, 5+ diamonds, no four-card major)."
+  source: "ACBL SAYC booklet — inverted minor raises."
+
+- id: resp_1d_1h
+  call: "1H"
+  when: { auction: ["1D", "P"], by: responder }
+  hand: { hcp: [6, 21], hearts: [4, 13] }
+  priority: 101
+  why: "Up the line: 4+ hearts, 6+ points, forcing one round."
+  source: "ACBL SAYC booklet — responses up the line."
+
+- id: resp_1d_1s
+  call: "1S"
+  when: { auction: ["1D", "P"], by: responder }
+  hand: { hcp: [6, 21], spades: [4, 13] }
+  priority: 100
+  why: "4+ spades, 6+ points, forcing one round."
+  source: "ACBL SAYC booklet — responses up the line."
+
+- id: resp_1d_2nt
+  call: "2NT"
+  when: { auction: ["1D", "P"], by: responder }
+  hand: { hcp: [13, 15], balanced: true, hearts: [0, 3], spades: [0, 3] }
+  priority: 80
+  why: "Balanced 13-15 with no four-card major: natural 2NT."
+  source: "ACBL SAYC booklet — notrump responses to a minor."
+
+- id: resp_1d_1nt
+  call: "1NT"
+  when: { auction: ["1D", "P"], by: responder }
+  hand: { hcp: [6, 10], hearts: [0, 3], spades: [0, 3] }
+  priority: 70
+  why: "6-10 with no four-card major: natural 1NT."
+  source: "ACBL SAYC booklet — notrump responses to a minor."

@@ -1,0 +1,37 @@
+# SAYC bidding system — metadata and shared definitions.
+# Loaded by bridge.bidding_systems.sayc_loader.load_meta(). This file is
+# documentation/configuration; the actual bidding *rules* live in the sibling
+# .yaml files (openings.yaml, responses/, rebids/, conventions/).
+
+system: "Standard American Yellow Card (SAYC)"
+version: "0.1"
+variant: "plain SAYC (non-forcing 1NT response; 2/1 Game Force deferred)"
+
+# How hands are evaluated.
+evaluation:
+  high_card_points: { A: 4, K: 3, Q: 2, J: 1 }
+  balanced_shapes: ["4-3-3-3", "4-4-3-2", "5-3-3-2"]
+  light_openers:
+    seats_1_2: "Rule of 20 — open with HCP + (two longest suits) >= 20"
+    seats_3_4: "Rule of 15 — open light with HCP + spade length >= 15"
+  preempt_discipline: "Rule of 2/3/4 (overtricks tolerated by vulnerability)"
+
+# Notation used throughout the rule files and the matcher.
+notation:
+  suits: { S: spades, H: hearts, D: diamonds, C: clubs }
+  ranks: "A K Q J T 9 8 7 6 5 4 3 2  (T = ten)"
+  calls: 'level+strain e.g. "1NT", "1S", "2C"; "P"=pass, "X"=double, "XX"=redouble'
+  hand: '{"S": "AKQ", "H": "T98", "D": "7654", "C": "32"}'
+
+# Seats and vulnerability values recognised by the matcher.
+context:
+  seats: [1, 2, 3, 4]            # dealer is seat 1
+  vulnerability: ["none", "we", "they", "both", "any"]
+
+# Sources the rules were curated from (the ACBL booklet is the tie-breaker).
+sources:
+  - "ACBL SAYC System Booklet, rev. Jan 2006 (canonical)"
+  - "ACBL SAYC convention card (sayc_card.pdf)"
+  - "Korpela SAYC summary (jkorpela.fi/sayc.html)"
+  - "BridgeBum SAYC pages (bridgebum.com/sayc.php)"
+  - "Casinovi, SAYC Expanded System Summary (Georgia Tech)"

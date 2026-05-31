@@ -1,0 +1,98 @@
+# Opener's rebids — the high-confidence, near-forced follow-ups to the
+# notrump conventions and to the strong 2C opening.  Broader natural rebids
+# (reverses, jump rebids, raising responder, rebidding a six-card suit) are a
+# planned refinement.
+
+# --- Completing a Jacoby transfer (forced). --------------------------------
+
+- id: rebid_complete_transfer_to_hearts
+  call: "2H"
+  when: { auction: ["1NT", "P", "2D", "P"], by: opener }
+  priority: 100
+  why: "Accept the transfer: responder's 2D showed hearts, so opener bids 2H."
+  source: "ACBL SAYC booklet — completing Jacoby transfers."
+
+- id: rebid_complete_transfer_to_spades
+  call: "2S"
+  when: { auction: ["1NT", "P", "2H", "P"], by: opener }
+  priority: 100
+  why: "Accept the transfer: responder's 2H showed spades, so opener bids 2S."
+  source: "ACBL SAYC booklet — completing Jacoby transfers."
+
+# --- Answering Stayman (2C). -----------------------------------------------
+
+- id: rebid_stayman_2h
+  call: "2H"
+  when: { auction: ["1NT", "P", "2C", "P"], by: opener }
+  hand: { hearts: [4, 13] }
+  priority: 110
+  why: "Stayman reply: shows a four-card heart suit (bid hearts first when holding both majors)."
+  source: "ACBL SAYC booklet — Stayman replies."
+
+- id: rebid_stayman_2s
+  call: "2S"
+  when: { auction: ["1NT", "P", "2C", "P"], by: opener }
+  hand: { spades: [4, 13], hearts: [0, 3] }
+  priority: 100
+  why: "Stayman reply: shows four spades and denies four hearts."
+  source: "ACBL SAYC booklet — Stayman replies."
+
+- id: rebid_stayman_2d
+  call: "2D"
+  when: { auction: ["1NT", "P", "2C", "P"], by: opener }
+  hand: { hearts: [0, 3], spades: [0, 3] }
+  priority: 90
+  why: "Stayman reply: 2D denies a four-card major."
+  source: "ACBL SAYC booklet — Stayman replies."
+
+# --- Completing a Jacoby transfer over 2NT (forced). -----------------------
+
+- id: rebid_2nt_complete_transfer_to_hearts
+  call: "3H"
+  when: { auction: ["2NT", "P", "3D", "P"], by: opener }
+  priority: 100
+  why: "Accept the transfer: responder's 3D showed hearts, so opener bids 3H."
+  source: "ACBL SAYC booklet — completing transfers over 2NT."
+
+- id: rebid_2nt_complete_transfer_to_spades
+  call: "3S"
+  when: { auction: ["2NT", "P", "3H", "P"], by: opener }
+  priority: 100
+  why: "Accept the transfer: responder's 3H showed spades, so opener bids 3S."
+  source: "ACBL SAYC booklet — completing transfers over 2NT."
+
+# --- Answering Stayman (3C) over 2NT. --------------------------------------
+
+- id: rebid_2nt_stayman_3h
+  call: "3H"
+  when: { auction: ["2NT", "P", "3C", "P"], by: opener }
+  hand: { hearts: [4, 13] }
+  priority: 110
+  why: "Stayman reply over 2NT: shows a four-card heart suit (hearts first with both majors)."
+  source: "ACBL SAYC booklet — Stayman replies over 2NT."
+
+- id: rebid_2nt_stayman_3s
+  call: "3S"
+  when: { auction: ["2NT", "P", "3C", "P"], by: opener }
+  hand: { spades: [4, 13], hearts: [0, 3] }
+  priority: 100
+  why: "Stayman reply over 2NT: shows four spades and denies four hearts."
+  source: "ACBL SAYC booklet — Stayman replies over 2NT."
+
+- id: rebid_2nt_stayman_3d
+  call: "3D"
+  when: { auction: ["2NT", "P", "3C", "P"], by: opener }
+  hand: { hearts: [0, 3], spades: [0, 3] }
+  priority: 90
+  why: "Stayman reply over 2NT: 3D denies a four-card major."
+  source: "ACBL SAYC booklet — Stayman replies over 2NT."
+
+# --- Strong 2C opener's rebid after the 2D waiting response. ---------------
+
+- id: rebid_2c_2nt_balanced
+  call: "2NT"
+  when: { auction: ["2C", "P", "2D", "P"], by: opener }
+  hand: { hcp: [22, 24], balanced: true }
+  priority: 100
+  why: "Balanced 22-24: rebid 2NT (systems-on continuations apply, e.g. Stayman/transfers)."
+  source: "ACBL SAYC booklet — 2C opener's 2NT rebid."

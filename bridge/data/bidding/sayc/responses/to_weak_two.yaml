@@ -1,0 +1,68 @@
+# Responses to a weak two-bid (2D / 2H / 2S).  Context: ["2D"/"2H"/"2S","P"].
+#
+# Core responses encoded here:
+#   * raise to the three level with support and a weak/competitive hand
+#     (furthering the preempt), and
+#   * 2NT as the invitational "feature / Ogust" ask on a strong hand.
+# New-suit-forcing responses (RONF) are a planned refinement.
+#
+# Priority ladder:
+#   100  preemptive raise (3+ support, weak)
+#    90  2NT strong ask (15+)
+
+# ------------------------------------------------------------ over 2H (weak)
+
+- id: resp_2h_raise
+  call: "3H"
+  when: { auction: ["2H", "P"], by: responder }
+  hand: { hcp: [0, 9], hearts: [3, 13] }
+  priority: 100
+  why: "Furthering the preempt: 3+ hearts, weak — raise to 3H."
+  source: "ACBL SAYC booklet — raising a weak two."
+
+- id: resp_2h_ask_2nt
+  call: "2NT"
+  when: { auction: ["2H", "P"], by: responder }
+  hand: { hcp: [15, 21] }
+  priority: 90
+  alertable: true
+  why: "Strong (15+) game-try: 2NT asks opener to show a feature / suit quality."
+  source: "ACBL SAYC booklet — 2NT response to a weak two."
+
+# ------------------------------------------------------------ over 2S (weak)
+
+- id: resp_2s_raise
+  call: "3S"
+  when: { auction: ["2S", "P"], by: responder }
+  hand: { hcp: [0, 9], spades: [3, 13] }
+  priority: 100
+  why: "Furthering the preempt: 3+ spades, weak — raise to 3S."
+  source: "ACBL SAYC booklet — raising a weak two."
+
+- id: resp_2s_ask_2nt
+  call: "2NT"
+  when: { auction: ["2S", "P"], by: responder }
+  hand: { hcp: [15, 21] }
+  priority: 90
+  alertable: true
+  why: "Strong (15+) game-try: 2NT asks opener to show a feature / suit quality."
+  source: "ACBL SAYC booklet — 2NT response to a weak two."
+
+# ------------------------------------------------------------ over 2D (weak)
+
+- id: resp_2d_raise
+  call: "3D"
+  when: { auction: ["2D", "P"], by: responder }
+  hand: { hcp: [0, 9], diamonds: [3, 13] }
+  priority: 100
+  why: "Furthering the preempt: 3+ diamonds, weak — raise to 3D."
+  source: "ACBL SAYC booklet — raising a weak two."
+
+- id: resp_2d_ask_2nt
+  call: "2NT"
+  when: { auction: ["2D", "P"], by: responder }
+  hand: { hcp: [15, 21] }
+  priority: 90
+  alertable: true
+  why: "Strong (15+) game-try: 2NT asks opener to show a feature / suit quality."
+  source: "ACBL SAYC booklet — 2NT response to a weak two."

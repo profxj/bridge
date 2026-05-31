@@ -1,0 +1,67 @@
+# Responses to a 1NT opening (15-17).  Context: partner opened 1NT and RHO
+# passed, so the auction ends in ["1NT", "P"].  Pass (0-7, no long suit) is the
+# matcher default when no rule fires.
+#
+# Priority ladder:
+#   120  Jacoby transfer (5+ major) — bid even on weak hands (signoff)
+#   110  Stayman 2C      (8+, a four-card major)
+#    80  3NT to play     (10-15 balanced, no four-card major)
+#    70  2NT invite      (8-9 balanced, no four-card major)
+
+# --- Jacoby transfers (alertable). 5+ major, any strength. -----------------
+
+- id: resp_1nt_transfer_spades
+  call: "2H"
+  when: { auction: ["1NT", "P"], by: responder }
+  hand: { spades: [5, 13], atleast_as_long_as: [spades, hearts] }
+  priority: 121
+  alertable: true
+  why: "Jacoby transfer: 2H shows 5+ spades and asks opener to bid 2S."
+  source: "ACBL SAYC booklet — Jacoby transfers."
+
+- id: resp_1nt_transfer_hearts
+  call: "2D"
+  when: { auction: ["1NT", "P"], by: responder }
+  hand: { hearts: [5, 13], longer_than: [hearts, spades] }
+  priority: 120
+  alertable: true
+  why: "Jacoby transfer: 2D shows 5+ hearts and asks opener to bid 2H."
+  source: "ACBL SAYC booklet — Jacoby transfers."
+
+# --- Stayman: 8+ HCP with at least one four-card major. --------------------
+
+- id: resp_1nt_stayman_spades
+  call: "2C"
+  when: { auction: ["1NT", "P"], by: responder }
+  hand: { hcp: [8, 16], spades: [4, 4] }
+  priority: 110
+  alertable: true
+  why: "Stayman: 2C asks for a four-card major (responder holds four spades)."
+  source: "ACBL SAYC booklet — Stayman."
+
+- id: resp_1nt_stayman_hearts
+  call: "2C"
+  when: { auction: ["1NT", "P"], by: responder }
+  hand: { hcp: [8, 16], hearts: [4, 4] }
+  priority: 110
+  alertable: true
+  why: "Stayman: 2C asks for a four-card major (responder holds four hearts)."
+  source: "ACBL SAYC booklet — Stayman."
+
+# --- Natural notrump invitations / signoffs (no four-card major). ----------
+
+- id: resp_1nt_raise_3nt
+  call: "3NT"
+  when: { auction: ["1NT", "P"], by: responder }
+  hand: { hcp: [10, 15], balanced: true, spades: [0, 3], hearts: [0, 3] }
+  priority: 80
+  why: "Balanced 10-15 with no four-card major: raise straight to game."
+  source: "ACBL SAYC booklet — 1NT responses."
+
+- id: resp_1nt_invite_2nt
+  call: "2NT"
+  when: { auction: ["1NT", "P"], by: responder }
+  hand: { hcp: [8, 9], balanced: true, spades: [0, 3], hearts: [0, 3] }
+  priority: 70
+  why: "Balanced 8-9 with no four-card major: invite game with 2NT."
+  source: "ACBL SAYC booklet — 1NT responses."
